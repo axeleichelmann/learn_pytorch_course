@@ -2,6 +2,7 @@
 This script contains various utility functions for PyTorch model training & saving
 """
 import torch
+import torch.nn as nn
 from pathlib import Path
 
 def save_model(model : nn.Module,
