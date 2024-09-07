@@ -169,3 +169,58 @@ def train_model(model : nn.Module, num_epochs : int,
     eval_accs.append(eval_results[1])
 
   return train_losses, train_accs, eval_losses, eval_accs
+
+
+# Define new `train_model` function that includes SummaryWriter
+def train_model_v2(model : nn.Module, num_epochs : int,
+                   train_dataloader : DataLoader, test_dataloader : DataLoader,
+                   optimizer : torch.optimm, device : torch.device, loss_fn,
+                   writer : SummaryWriter):
+  """
+  Trains & Evaluates Model, Stores Results in designated directory, and returns lists containign training & evaluation results
+  ----------------------------------------------
+  Input: 
+  model - model to be trained & evaluated
+  num_epochs - numer of epochs for which you want to train the model
+  train_dataloader - dataloader containing training data in batch format
+  test_dataloader - dataloader containing testing data in batch format
+  optimizer - optimizer to use for model training
+  device - device on which the carry out model training
+  loss_fn - loss function for evaluating model
+  writer - writer used to store training & evaluation results
+
+  ------------------------------------------------
+  Output:
+  Tuple[train_losses, train_accs, eval_losses, eval_accs]
+  """
+  
+  # Create lists in which to store training & validation losses and accuracies
+  train_losses, train_accs = [], []
+  eval_losses, eval_accs = [], []
+
+  for epoch in tqdm(range(num_epochs)):
+    train_loss, train_acc = train_step(model, train_dataloader, device, optimizer, loss_fn)
+    eval_loss, eval_acc = eval_step(model, test_dataloader, device, loss_fn)
+
+    # Append training & evaluation results to lists
+    train_losses.append(train_loss)
+    train_accs.append(train_acc)
+    eval_losses.append(eval_loss)
+    eval_accs.append(eval_acc)
+
+    # Print results every 10 epochs
+    if epoch % 10 == 0:
+      print(f"Epoch : {epoch} | Training Loss = {train_loss}, Training Accuracy = {train_acc} | Evaluation Loss = {eval_loss}, Evaluation Accuracy = {eval_acc}")
+
+    # Add results to SummaryWriter
+    writer.add_scalars(main_tag="Loss Values", tag_scalar_dict = {"train_loss" : train_loss, "eval_loss" : eval_loss}, global_step = epoch)
+    writer.add_scalars(main_tag="Accuracy Scores", tag_scalar_dict = {"train_acc" : train_acc, "eval_acc" : eval_acc}, global_step = epoch)
+    writer.add_graph(model=model, input_to_model=torch.randn(8,3,224,224).to(device))
+
+  # Close writer after all of model training
+  writer.close()
+
+  return train_losses, train_accs, eval_losses, eval_accs
+
+
+                     
