@@ -174,7 +174,7 @@ def train_model(model : nn.Module, num_epochs : int,
 # Define new `train_model` function that includes SummaryWriter
 def train_model_v2(model : nn.Module, num_epochs : int,
                    train_dataloader : DataLoader, test_dataloader : DataLoader,
-                   optimizer : torch.optimm, device : torch.device, loss_fn,
+                   optimizer : torch.optim, device : torch.device, loss_fn,
                    writer : SummaryWriter):
   """
   Trains & Evaluates Model, Stores Results in designated directory, and returns lists containign training & evaluation results
