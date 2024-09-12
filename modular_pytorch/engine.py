@@ -176,7 +176,7 @@ def train_model(model : nn.Module, num_epochs : int,
 def train_model_v2(model : nn.Module, num_epochs : int,
                    train_dataloader : DataLoader, test_dataloader : DataLoader,
                    optimizer : torch.optim, device : torch.device, loss_fn,
-                   writer : SummaryWriter):
+                   writer : torch.utils.tensorboard):
   """
   Trains & Evaluates Model, Stores Results in designated directory, and returns lists containign training & evaluation results
   ----------------------------------------------
