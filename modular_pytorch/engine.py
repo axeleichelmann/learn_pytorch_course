@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 
 from torch.utils.data import DataLoader
+from torchinfo import SummaryWriter
 
 from tqdm.auto import tqdm
 
