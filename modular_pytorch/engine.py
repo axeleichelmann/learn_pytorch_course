@@ -211,7 +211,7 @@ def train_model_v2(model : nn.Module, num_epochs : int,
 
     # Print results every 10 epochs
     if epoch % 10 == 0:
-      print(f"Epoch : {epoch} | Training Loss = {train_loss}, Training Accuracy = {train_acc} | Evaluation Loss = {eval_loss}, Evaluation Accuracy = {eval_acc}")
+      print(f"Epoch : {epoch} | Training Loss = {train_loss:.3f}, Training Accuracy = {train_acc:.2f} | Evaluation Loss = {eval_loss:.3f}, Evaluation Accuracy = {eval_acc:.2f}")
 
     # Add results to SummaryWriter
     writer.add_scalars(main_tag="Loss Values", tag_scalar_dict = {"train_loss" : train_loss, "eval_loss" : eval_loss}, global_step = epoch)
